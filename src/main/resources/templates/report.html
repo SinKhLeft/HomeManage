@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<http xmlns:div="http://www.divymeleaf.org">
+<head>
+<title>인쇄</title>
+<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css" rel="stylesheet">
+<style>
+	*{
+		font-family: 'NanumGothic';
+		margin: 0px;
+		padding: 0px;
+		border: 0px;
+		font-size: 22px;
+		overflow: hidden;
+	}
+	body {
+		margin: 25px;
+	}
+	.tableMain{
+		border: 1px solid black;
+		display: flex;
+		flex-direction: column;
+		margin:10px;
+	}
+	.tableMain > div > div{
+		border-collapse: collapse;
+		border-bottom: 1px solid black;
+		border-left: 1px solid black;
+		min-width: 100px;
+		min-height: 35px;	}
+	.tableMain > div > div:nth-last-child(1){
+		border-right: 1px solid black;
+	}
+	
+	.tableTitle{
+		border: 1px solid black;
+		background-color: #b6d7a8;
+		font-weight: Bold;
+		min-width: 400px;
+		min-height: 35px;
+		
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-content: center;
+		flex-wrap:wrap;
+		padding-bottom: 2px;
+	}
+	.tableHeader{
+		font-weight: Bold;
+	}
+	.tableHeader,.tableData{
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+	
+	.tableHeader > div,.tableData > div{
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-content: center;
+		flex-wrap:wrap;
+		padding-bottom: 2px;
+		width: 25%;
+	}
+	
+	.tableData:nth-child(odd){
+		background-color: #EFEFEF;
+	}
+	
+	.tableData > div:nth-child(3){
+		justify-content: right;
+		padding-right: 5px;
+		width: calc(25% - 5px);
+	}
+	
+	.tableTextbox{
+		border: 1px solid black;
+		border-top:0px;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-content: center;
+		text-align: center;
+		flex-wrap:wrap;
+		min-width: 400px;
+		min-height: 125px;
+	}
+</style>
+<style>
+	.loadingscreen{
+		background-color: rgba(0, 0, 0, 0.3);
+		position: fixed;
+		left: 0px;
+		top:0px;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-content: center;
+		text-align: center;
+		flex-wrap:wrap;
+	}
+	.loading span {
+		font-size: 48px;	
+		display: inline-block;
+		margin: 0 -.05em;
+		animation: loading 1.4s infinite alternate;
+	}
+	loading span:nth-child(2) {
+		animation-delay: .1s;
+	}
+	loading span:nth-child(3) {
+		animation-delay: .2s;
+	}
+	loading span:nth-child(4) {
+		animation-delay: .3s;
+	}
+	loading span:nth-child(5) {
+		animation-delay: .4s;
+	}
+	loading span:nth-child(6) {
+		animation-delay: .5s;
+	}
+	loading span:nth-child(7) {
+		animation-delay: .6s;
+	}
+	@keyframes loading {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+</style>
+
+<script type="text/javascript">
+	onloadEvent = function(){
+		
+		var list = document.querySelectorAll(".tableData");
+		list.forEach((element) => {
+			//<!-- 호수에 ##호 추가 -->
+			//element.children[0].textContent = element.children[0].textContent+"호";
+			//입금일에 년월일 추가
+			element.children[1].textContent = element.children[1].textContent.replace(/(\d{4})(\d{2})(\d{2})/g, '$1/$2/$3');
+			//납입금에 3글자 마다 콤마
+			element.children[2].textContent = element.children[2].textContent.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+			//만료일에 년월 추가
+			element.children[3].textContent = element.children[3].textContent.replace(/(\d{4})(\d{2})/g, '$1년 $2월');
+		});
+		//완료시 loding 표기 숨기기
+		document.querySelector(".loadingscreen").style.display = "none";
+	}
+</script>
+</head>
+<body onload="onloadEvent()">
+	<div class="tableMain">
+		<!-- 헤더 -->
+		<div class="tableTitle">
+				2024년 10월 관리비 내역
+		</div>
+		<div class="tableHeader">
+			<div>호수</div>
+			<div>입금일</div>
+			<div>납입금</div>
+			<div>만료일</div>
+		</div>
+		
+		<!-- 데이터 부 -->
+		<div class="tableData" th:each="data: ${list}">
+			<div th:text="${data.roomNumber}"></div>
+			<div th:text="${data.inputDate}"></div>
+			<div th:text="${data.payment}"></div>
+			<div th:text="${data.endDateMonth}"></div>
+		</div>
+	</div>
+	<!-- 지출내역-->
+	<div class="tableMain">
+		<div class="tableTitle">
+				지출 내역
+		</div>
+		<div class="tableTextbox">
+		7가구 X 15,000 = 105,000원<br>
+		청소비 60,000 + 수고비 10,000 + 전기세 6,480 = 76,480원<br>
+		<br>
+		10월 적립금 28,520 + 9월까지 적립금605,040 = 633,560원
+		</div>
+	</div>
+	<!--페이지 로딩-->
+	<div class="loadingscreen">
+		<div class="loading">
+			<span>L</span>
+			<span>O</span>
+			<span>A</span>
+			<span>D</span>
+			<span>I</span>
+			<span>N</span>
+			<span>G</span>
+		</div>
+	</div>
+</body>
+</html>

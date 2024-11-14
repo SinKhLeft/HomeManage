@@ -36,9 +36,23 @@ public class mainController {
 			list.add(t);
 		});
 		
-		model.addAttribute("meassage", list);
+		model.addAttribute("list", list);
 		
 		return "/index.html";
 	}
 	
+	//report
+	@RequestMapping(method = RequestMethod.GET,value = "/report")
+	public String report(Model model) {
+		
+		List<depoWithHisObj> list = new ArrayList<depoWithHisObj>();
+		
+		depoWithHisRepository.findAll().forEach(t -> {
+			list.add(t);
+		});
+		
+		model.addAttribute("list", list);
+		
+		return "/report.html";
+	}
 }
