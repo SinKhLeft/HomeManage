@@ -150,6 +150,9 @@
 			//만료일에 년월 추가
 			element.children[3].textContent = element.children[3].textContent.replace(/(\d{4})(\d{2})/g, '$1년 $2월');
 		});
+		
+		document.querySelector(".tableTitle").textContent = document.querySelector(".tableTitle").textContent.replace(/(\d{4})(\d{2})/g,"$1년 $2월 관리비 내역")
+		
 		//완료시 loding 표기 숨기기
 		document.querySelector(".loadingscreen").style.display = "none";
 	}
@@ -158,8 +161,8 @@
 <body onload="onloadEvent()">
 	<div class="tableMain">
 		<!-- 헤더 -->
-		<div class="tableTitle">
-				2024년 10월 관리비 내역
+		<div class="tableTitle" th:text="${param.date}">
+				0000년 00월 관리비 내역
 		</div>
 		<div class="tableHeader">
 			<div>호수</div>
